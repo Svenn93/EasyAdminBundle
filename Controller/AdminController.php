@@ -212,6 +212,15 @@ class AdminController extends Controller
 
             $refererUrl = $this->request->query->get('referer', '');
 
+	        if (isset($this->entity['edit']['redirect']) && $this->entity['edit']['redirect'] === false) {
+		        return $this->render($this->entity['templates']['edit'], array(
+			        'form' => $editForm->createView(),
+			        'entity_fields' => $fields,
+			        'entity' => $entity,
+			        'delete_form' => $deleteForm->createView(),
+		        ));
+	        }
+
             return !empty($refererUrl)
                 ? $this->redirect(urldecode($refererUrl))
                 : $this->redirect($this->generateUrl('easyadmin', array('action' => 'list', 'entity' => $this->entity['name'])));
